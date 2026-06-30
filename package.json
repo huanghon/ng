@@ -1,0 +1,11 @@
+{
+  "name": "ng-exchange-landing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx wrangler pages dev . --kv=SITE_CONFIG",
+    "preview:local": "node scripts/local-preview.mjs",
+    "check": "node --check public/assets/main.js && node --check public/assets/admin.js && node --check functions/api/config.js && node --check scripts/local-preview.mjs"
+  }
+}

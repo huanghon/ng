@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>站点后台配置</title>
+  <link rel="stylesheet" href="/assets/admin.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <section id="loginPanel" class="panel narrow-panel" aria-labelledby="loginTitle">
+      <div class="panel-heading">
+        <div>
+          <h1 id="loginTitle">后台登录</h1>
+        </div>
+        <a class="home-link" href="/">查看首页</a>
+      </div>
+
+      <form id="loginForm" class="config-form">
+        <label>
+          <span>管理密码</span>
+          <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="请输入管理密码" required>
+        </label>
+
+        <div class="actions">
+          <button id="loginBtn" class="primary-btn" type="submit">登录</button>
+        </div>
+      </form>
+
+      <p id="loginStatus" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="configPanel" class="panel is-hidden" aria-labelledby="adminTitle">
+      <div class="panel-heading">
+        <div>
+          <h1 id="adminTitle">站点配置</h1>
+        </div>
+        <a class="home-link" href="/">查看首页</a>
+      </div>
+
+      <form id="configForm" class="config-form">
+        <label>
+          <span>客服 ID</span>
+          <input id="customerServiceId" name="customerServiceId" type="text" inputmode="numeric" placeholder="2379548014" required>
+        </label>
+
+        <label>
+          <span>联系客服跳转链接</span>
+          <input id="contactUrl" name="contactUrl" type="url" placeholder="https://www.paopaomiyu.xyz/" required>
+        </label>
+
+        <label>
+          <span>泡泡下载链接</span>
+          <input id="downloadUrl" name="downloadUrl" type="url" placeholder="https://www.paopaomiyu.xyz/" required>
+        </label>
+
+        <div class="actions">
+          <button id="loadBtn" class="secondary-btn" type="button">读取当前配置</button>
+          <button id="saveBtn" class="primary-btn" type="submit">保存配置</button>
+        </div>
+      </form>
+
+      <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="/assets/admin.js" defer></script>
+</body>
+</html>

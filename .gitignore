@@ -1,0 +1,10 @@
+.dev.vars
+.wrangler/
+node_modules/
+dist/
+local-preview.log
+local-preview.err
+homepage-*.png
+admin-desktop.png
+*.zip
+/logo.jpeg
