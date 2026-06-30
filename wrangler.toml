@@ -1,8 +1,3 @@
 name = "ng-exchange-landing"
 compatibility_date = "2026-06-30"
 pages_build_output_dir = "public"
-
-[[kv_namespaces]]
-binding = "SITE_CONFIG"
-id = "replace_with_production_kv_namespace_id"
-preview_id = "replace_with_preview_kv_namespace_id"

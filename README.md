@@ -13,7 +13,7 @@
 - `public/assets/admin.js`：后台交互
 - `public/images/`：Logo 等静态图片位置
 - `functions/api/config.js`：Cloudflare Pages Functions API
-- `wrangler.toml`：Cloudflare 部署配置示例
+- `wrangler.toml`：Cloudflare Pages 输出目录配置
 - `.dev.vars.example`：本地环境变量示例
 
 ## 本地预览
@@ -52,7 +52,7 @@ npm run preview:local
 ## Cloudflare Pages 部署
 
 1. 在 Cloudflare 创建 Pages 项目，连接 Git 仓库或使用 Wrangler 上传。
-2. 构建设置里将输出目录设置为 `public`；如果使用 `wrangler.toml`，配置已经写好。
+2. 构建设置里将输出目录设置为 `public`；`wrangler.toml` 里也已经写好。
 3. 创建 KV Namespace，例如 `SITE_CONFIG`。
 4. 在 Pages 项目的 Settings → Functions → KV namespace bindings 里添加绑定：
    - Variable name：`SITE_CONFIG`
@@ -63,7 +63,7 @@ npm run preview:local
    - 首页：`https://你的域名/`
    - 后台：`https://你的域名/admin`
 
-如果使用 Wrangler 部署，请先把 `wrangler.toml` 里的 `id` 和 `preview_id` 替换成自己的 KV Namespace ID。
+KV 绑定建议直接在 Cloudflare Pages 网页后台配置，不要在 `wrangler.toml` 里保留示例 KV ID。占位 ID 会导致部署时报 `Invalid KV namespace ID`。
 
 ## 后台可配置项
 
