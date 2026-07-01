@@ -13,7 +13,8 @@
     loginPassword: document.getElementById("loginPassword"),
     customerServiceId: document.getElementById("customerServiceId"),
     contactUrl: document.getElementById("contactUrl"),
-    downloadUrl: document.getElementById("downloadUrl")
+    downloadUrl: document.getElementById("downloadUrl"),
+    gameUrl: document.getElementById("gameUrl")
   };
 
   let adminPassword = "";
@@ -27,13 +28,15 @@
     fields.customerServiceId.value = config.customerServiceId || "";
     fields.contactUrl.value = config.contactUrl || "";
     fields.downloadUrl.value = config.downloadUrl || "";
+    fields.gameUrl.value = config.gameUrl || "";
   }
 
   function getConfigFromForm() {
     return {
       customerServiceId: fields.customerServiceId.value.trim(),
       contactUrl: fields.contactUrl.value.trim(),
-      downloadUrl: fields.downloadUrl.value.trim()
+      downloadUrl: fields.downloadUrl.value.trim(),
+      gameUrl: fields.gameUrl.value.trim()
     };
   }
 

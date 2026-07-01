@@ -4,6 +4,7 @@ const DEFAULT_CONFIG = {
   customerServiceId: "2379548014",
   contactUrl: "https://www.paopaomiyu.xyz/",
   downloadUrl: "https://www.paopaomiyu.xyz/",
+  gameUrl: "https://h5.cggames.top/#/Main/home",
   siteTitle: "南宫承兑",
   logoUrl: "/images/logo.jpeg"
 };
@@ -59,6 +60,7 @@ function sanitizeConfig(config) {
     customerServiceId: normalizeText(config?.customerServiceId, DEFAULT_CONFIG.customerServiceId, 64),
     contactUrl: normalizePublicUrl(config?.contactUrl, DEFAULT_CONFIG.contactUrl, ["http:", "https:", "wangwang:"]),
     downloadUrl: normalizePublicUrl(config?.downloadUrl, DEFAULT_CONFIG.downloadUrl),
+    gameUrl: normalizePublicUrl(config?.gameUrl, DEFAULT_CONFIG.gameUrl),
     siteTitle: normalizeText(config?.siteTitle, DEFAULT_CONFIG.siteTitle, 40),
     logoUrl: normalizeLogoUrl(config?.logoUrl, DEFAULT_CONFIG.logoUrl)
   };
@@ -69,7 +71,8 @@ function sanitizeAdminConfig(config, currentConfig) {
     ...currentConfig,
     customerServiceId: normalizeText(config?.customerServiceId, currentConfig.customerServiceId, 64),
     contactUrl: normalizePublicUrl(config?.contactUrl, currentConfig.contactUrl, ["http:", "https:", "wangwang:"]),
-    downloadUrl: normalizePublicUrl(config?.downloadUrl, currentConfig.downloadUrl)
+    downloadUrl: normalizePublicUrl(config?.downloadUrl, currentConfig.downloadUrl),
+    gameUrl: normalizePublicUrl(config?.gameUrl, currentConfig.gameUrl)
   };
 }
 

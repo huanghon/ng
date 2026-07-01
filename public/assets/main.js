@@ -3,6 +3,7 @@
     customerServiceId: "2379548014",
     contactUrl: "https://www.paopaomiyu.xyz/",
     downloadUrl: "https://www.paopaomiyu.xyz/",
+    gameUrl: "https://h5.cggames.top/#/Main/home",
     siteTitle: "南宫承兑",
     logoUrl: "/images/logo.jpeg"
   };
@@ -16,6 +17,7 @@
   const modalConfirmBtn = document.getElementById("modalConfirmBtn");
   const modalCancelBtn = document.getElementById("modalCancelBtn");
   const downloadLink = document.getElementById("downloadLink");
+  const gameLink = document.getElementById("gameLink");
   const siteTitle = document.getElementById("siteTitle");
   const siteLogo = document.getElementById("siteLogo");
 
@@ -31,6 +33,7 @@
     document.title = currentConfig.siteTitle || defaultConfig.siteTitle;
     siteTitle.textContent = currentConfig.siteTitle || defaultConfig.siteTitle;
     downloadLink.href = currentConfig.downloadUrl || defaultConfig.downloadUrl;
+    gameLink.href = currentConfig.gameUrl || defaultConfig.gameUrl;
     sellCBtn.href = currentConfig.contactUrl || defaultConfig.contactUrl;
     accountWhitelistBtn.href = currentConfig.contactUrl || defaultConfig.contactUrl;
 
