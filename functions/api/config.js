@@ -58,6 +58,40 @@ function normalizeLogoUrl(value, fallback) {
   return normalizePublicUrl(text, fallback);
 }
 
+function normalizeRequiredAdminText(value, label, maxLength) {
+  if (typeof value !== "string") {
+    return { error: `${label}不能为空。` };
+  }
+
+  const text = value.trim();
+  if (!text) {
+    return { error: `${label}不能为空。` };
+  }
+
+  return { value: text.slice(0, maxLength) };
+}
+
+function normalizeRequiredAdminUrl(value, label, allowedProtocols = ["http:", "https:"]) {
+  if (typeof value !== "string") {
+    return { error: `${label}不能为空。` };
+  }
+
+  const text = value.trim();
+  if (!text) {
+    return { error: `${label}不能为空。` };
+  }
+
+  try {
+    const url = new URL(text);
+    if (!allowedProtocols.includes(url.protocol)) {
+      return { error: `${label}必须使用 ${allowedProtocols.join(" / ")} 链接。` };
+    }
+    return { value: text.slice(0, 500) };
+  } catch {
+    return { error: `${label}必须是完整链接，例如 https://example.com/。` };
+  }
+}
+
 function normalizePassword(value) {
   if (typeof value !== "string") {
     return null;
@@ -137,13 +171,31 @@ function sanitizeConfig(config) {
   };
 }
 
-function sanitizeAdminConfig(config, currentConfig) {
+function validateAdminConfig(config, currentConfig) {
+  const errors = [];
+  const customerServiceId = normalizeRequiredAdminText(config?.customerServiceId, "客服 ID", 64);
+  const contactUrl = normalizeRequiredAdminUrl(config?.contactUrl, "联系客服跳转链接", ["http:", "https:", "wangwang:"]);
+  const downloadUrl = normalizeRequiredAdminUrl(config?.downloadUrl, "泡泡下载链接");
+  const gameUrl = normalizeRequiredAdminUrl(config?.gameUrl, "游戏娱乐链接");
+
+  for (const item of [customerServiceId, contactUrl, downloadUrl, gameUrl]) {
+    if (item.error) {
+      errors.push(item.error);
+    }
+  }
+
+  if (errors.length) {
+    return { errors };
+  }
+
   return {
-    ...currentConfig,
-    customerServiceId: normalizeText(config?.customerServiceId, currentConfig.customerServiceId, 64),
-    contactUrl: normalizePublicUrl(config?.contactUrl, currentConfig.contactUrl, ["http:", "https:", "wangwang:"]),
-    downloadUrl: normalizePublicUrl(config?.downloadUrl, currentConfig.downloadUrl),
-    gameUrl: normalizePublicUrl(config?.gameUrl, currentConfig.gameUrl)
+    config: {
+      ...currentConfig,
+      customerServiceId: customerServiceId.value,
+      contactUrl: contactUrl.value,
+      downloadUrl: downloadUrl.value,
+      gameUrl: gameUrl.value
+    }
   };
 }
 
@@ -208,7 +260,12 @@ export async function onRequestPost({ request, env }) {
     }
   }
 
-  const config = sanitizeAdminConfig(body?.config || {}, currentConfig);
+  const validated = validateAdminConfig(body?.config || {}, currentConfig);
+  if (validated.errors) {
+    return json({ error: validated.errors.join(" ") }, 400);
+  }
+
+  const config = validated.config;
 
   try {
     await env.SITE_CONFIG.put(CONFIG_KEY, JSON.stringify(config));

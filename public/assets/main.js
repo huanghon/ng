@@ -43,7 +43,7 @@
 
   async function loadConfig() {
     try {
-      const response = await fetch("/api/config", {
+      const response = await fetch(`/api/config?t=${Date.now()}`, {
         headers: { "Accept": "application/json" },
         cache: "no-store"
       });

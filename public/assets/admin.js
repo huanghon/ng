@@ -58,7 +58,7 @@
     loadBtn.disabled = true;
 
     try {
-      const response = await fetch("/api/config", {
+      const response = await fetch(`/api/config?t=${Date.now()}`, {
         headers: { "Accept": "application/json" },
         cache: "no-store"
       });
@@ -152,7 +152,7 @@
       }
 
       fillForm(result.config);
-      setStatus(statusMessage, "保存成功，刷新首页后即可生效。", "success");
+      setStatus(statusMessage, `保存成功，游戏娱乐链接已更新为：${result.config.gameUrl}`, "success");
     } catch (error) {
       console.error(error);
       setStatus(statusMessage, error.message || "保存失败，请稍后重试。", "error");
