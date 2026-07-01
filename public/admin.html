@@ -67,6 +67,26 @@
       </form>
 
       <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+
+      <form id="passwordForm" class="config-form password-form" aria-labelledby="passwordTitle">
+        <h2 id="passwordTitle">修改管理员密码</h2>
+
+        <label>
+          <span>新管理员密码</span>
+          <input id="newAdminPassword" name="newAdminPassword" type="password" autocomplete="new-password" minlength="6" maxlength="128" placeholder="至少 6 位" required>
+        </label>
+
+        <label>
+          <span>确认新密码</span>
+          <input id="confirmAdminPassword" name="confirmAdminPassword" type="password" autocomplete="new-password" minlength="6" maxlength="128" placeholder="再次输入新密码" required>
+        </label>
+
+        <div class="actions">
+          <button id="passwordBtn" class="secondary-btn" type="submit">修改密码</button>
+        </div>
+      </form>
+
+      <p id="passwordStatus" class="status" role="status" aria-live="polite"></p>
     </section>
   </main>
 

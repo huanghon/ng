@@ -67,6 +67,12 @@ h1 {
   line-height: 1.2;
 }
 
+h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
 .home-link {
   flex: 0 0 auto;
   color: var(--blue);
@@ -77,6 +83,12 @@ h1 {
 .config-form {
   display: grid;
   gap: 18px;
+}
+
+.password-form {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
 }
 
 .split {

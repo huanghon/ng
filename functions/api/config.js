@@ -1,4 +1,7 @@
 const CONFIG_KEY = "site-config";
+const ADMIN_PASSWORD_KEY = "admin-password";
+const PASSWORD_MIN_LENGTH = 6;
+const PASSWORD_MAX_LENGTH = 128;
 
 const DEFAULT_CONFIG = {
   customerServiceId: "2379548014",
@@ -55,6 +58,74 @@ function normalizeLogoUrl(value, fallback) {
   return normalizePublicUrl(text, fallback);
 }
 
+function normalizePassword(value) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const password = value.trim();
+  if (password.length < PASSWORD_MIN_LENGTH || password.length > PASSWORD_MAX_LENGTH) {
+    return null;
+  }
+
+  return password;
+}
+
+function bytesToHex(bytes) {
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function makeSalt() {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return bytesToHex(bytes);
+}
+
+async function sha256Hex(text) {
+  const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return bytesToHex(new Uint8Array(buffer));
+}
+
+async function createPasswordRecord(password) {
+  const salt = makeSalt();
+  return {
+    version: 1,
+    salt,
+    hash: await sha256Hex(`${salt}:${password}`)
+  };
+}
+
+function isPasswordRecord(record) {
+  return record?.version === 1
+    && typeof record.salt === "string"
+    && typeof record.hash === "string"
+    && record.salt.length > 0
+    && record.hash.length > 0;
+}
+
+async function readStoredPassword(env) {
+  if (!env.SITE_CONFIG) {
+    return null;
+  }
+
+  const record = await env.SITE_CONFIG.get(ADMIN_PASSWORD_KEY, "json");
+  return isPasswordRecord(record) ? record : null;
+}
+
+async function verifyAdminPassword(env, password) {
+  if (typeof password !== "string" || !password) {
+    return false;
+  }
+
+  const storedPassword = await readStoredPassword(env);
+  if (storedPassword) {
+    const hash = await sha256Hex(`${storedPassword.salt}:${password}`);
+    return hash === storedPassword.hash;
+  }
+
+  return Boolean(env.ADMIN_PASSWORD) && password === env.ADMIN_PASSWORD;
+}
+
 function sanitizeConfig(config) {
   return {
     customerServiceId: normalizeText(config?.customerServiceId, DEFAULT_CONFIG.customerServiceId, 64),
@@ -100,10 +171,6 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "SITE_CONFIG KV binding is not configured." }, 500);
   }
 
-  if (!env.ADMIN_PASSWORD) {
-    return json({ error: "ADMIN_PASSWORD environment variable is not configured." }, 500);
-  }
-
   let body;
   try {
     body = await request.json();
@@ -111,7 +178,12 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Invalid JSON body." }, 400);
   }
 
-  if (body?.password !== env.ADMIN_PASSWORD) {
+  const storedPassword = await readStoredPassword(env);
+  if (!storedPassword && !env.ADMIN_PASSWORD) {
+    return json({ error: "ADMIN_PASSWORD environment variable is not configured." }, 500);
+  }
+
+  if (!(await verifyAdminPassword(env, body?.password))) {
     return json({ error: "管理密码错误。" }, 401);
   }
 
@@ -119,6 +191,21 @@ export async function onRequestPost({ request, env }) {
 
   if (body?.action === "login") {
     return json({ ok: true, config: currentConfig });
+  }
+
+  if (body?.action === "changePassword") {
+    const newPassword = normalizePassword(body?.newPassword);
+    if (!newPassword) {
+      return json({ error: `新密码长度需为 ${PASSWORD_MIN_LENGTH}-${PASSWORD_MAX_LENGTH} 位。` }, 400);
+    }
+
+    try {
+      await env.SITE_CONFIG.put(ADMIN_PASSWORD_KEY, JSON.stringify(await createPasswordRecord(newPassword)));
+      return json({ ok: true });
+    } catch (error) {
+      console.error("Failed to change admin password:", error);
+      return json({ error: "管理员密码修改失败，请检查 KV 绑定。" }, 500);
+    }
   }
 
   const config = sanitizeAdminConfig(body?.config || {}, currentConfig);
