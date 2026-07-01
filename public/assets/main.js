@@ -4,11 +4,20 @@
     contactUrl: "https://www.paopaomiyu.xyz/",
     downloadUrl: "https://www.paopaomiyu.xyz/",
     gameUrl: "https://h5.cggames.top/#/Main/home",
+    topLeftButtonText: "泡泡下载",
+    topLeftButtonUrl: "https://www.paopaomiyu.xyz/",
+    topRightButtonText: "游戏娱乐",
+    topRightButtonUrl: "https://h5.cggames.top/#/Main/home",
+    middleLeftButtonText: "EG/CG币出售",
+    middleLeftButtonUrl: "https://www.paopaomiyu.xyz/",
+    middleRightButtonText: "账户报白",
+    middleRightButtonUrl: "https://www.paopaomiyu.xyz/",
     siteTitle: "南宫承兑",
     logoUrl: "/images/logo.jpeg"
   };
 
   let currentConfig = { ...defaultConfig };
+  let currentModalTargetUrl = defaultConfig.middleLeftButtonUrl;
 
   const sellCBtn = document.getElementById("sellCBtn");
   const accountWhitelistBtn = document.getElementById("accountWhitelistBtn");
@@ -32,10 +41,14 @@
     currentConfig = normalizeConfig(config);
     document.title = currentConfig.siteTitle || defaultConfig.siteTitle;
     siteTitle.textContent = currentConfig.siteTitle || defaultConfig.siteTitle;
-    downloadLink.href = currentConfig.downloadUrl || defaultConfig.downloadUrl;
-    gameLink.href = currentConfig.gameUrl || defaultConfig.gameUrl;
-    sellCBtn.href = currentConfig.contactUrl || defaultConfig.contactUrl;
-    accountWhitelistBtn.href = currentConfig.contactUrl || defaultConfig.contactUrl;
+    downloadLink.textContent = currentConfig.topLeftButtonText || defaultConfig.topLeftButtonText;
+    downloadLink.href = currentConfig.topLeftButtonUrl || currentConfig.downloadUrl || defaultConfig.topLeftButtonUrl;
+    gameLink.textContent = currentConfig.topRightButtonText || defaultConfig.topRightButtonText;
+    gameLink.href = currentConfig.topRightButtonUrl || currentConfig.gameUrl || defaultConfig.topRightButtonUrl;
+    sellCBtn.textContent = currentConfig.middleLeftButtonText || defaultConfig.middleLeftButtonText;
+    sellCBtn.href = currentConfig.middleLeftButtonUrl || currentConfig.contactUrl || defaultConfig.middleLeftButtonUrl;
+    accountWhitelistBtn.textContent = currentConfig.middleRightButtonText || defaultConfig.middleRightButtonText;
+    accountWhitelistBtn.href = currentConfig.middleRightButtonUrl || currentConfig.contactUrl || defaultConfig.middleRightButtonUrl;
 
     siteLogo.classList.remove("is-hidden");
     siteLogo.src = currentConfig.logoUrl || defaultConfig.logoUrl;
@@ -108,6 +121,7 @@
 
   async function handleServiceButtonClick(event) {
     event.preventDefault();
+    currentModalTargetUrl = event.currentTarget.href || currentConfig.contactUrl || defaultConfig.middleLeftButtonUrl;
     await copyText(currentConfig.customerServiceId);
     showModal();
   }
@@ -117,7 +131,7 @@
 
   modalConfirmBtn.addEventListener("click", function () {
     hideModal();
-    window.location.href = currentConfig.contactUrl || defaultConfig.contactUrl;
+    window.location.href = currentModalTargetUrl || currentConfig.contactUrl || defaultConfig.middleLeftButtonUrl;
   });
 
   modalCancelBtn.addEventListener("click", hideModal);

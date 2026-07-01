@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
   <title>站点后台配置</title>
-  <link rel="stylesheet" href="/assets/admin.css?v=20260701-2">
+  <link rel="stylesheet" href="/assets/admin.css?v=20260701-3">
 </head>
 <body>
   <main class="admin-shell">
@@ -45,20 +45,55 @@
           <input id="customerServiceId" name="customerServiceId" type="text" inputmode="numeric" placeholder="2379548014" required>
         </label>
 
-        <label>
-          <span>联系客服跳转链接</span>
-          <input id="contactUrl" name="contactUrl" type="url" placeholder="https://www.paopaomiyu.xyz/" required>
-        </label>
+        <div class="button-config-grid">
+          <section class="field-group" aria-labelledby="topLeftButtonTitle">
+            <h2 id="topLeftButtonTitle">右上角按钮左</h2>
+            <label>
+              <span>按钮文字</span>
+              <input id="topLeftButtonText" name="topLeftButtonText" type="text" maxlength="24" placeholder="泡泡下载" required>
+            </label>
+            <label>
+              <span>按钮链接</span>
+              <input id="topLeftButtonUrl" name="topLeftButtonUrl" type="url" placeholder="https://www.paopaomiyu.xyz/" required>
+            </label>
+          </section>
 
-        <label>
-          <span>泡泡下载链接</span>
-          <input id="downloadUrl" name="downloadUrl" type="url" placeholder="https://www.paopaomiyu.xyz/" required>
-        </label>
+          <section class="field-group" aria-labelledby="topRightButtonTitle">
+            <h2 id="topRightButtonTitle">右上角按钮右</h2>
+            <label>
+              <span>按钮文字</span>
+              <input id="topRightButtonText" name="topRightButtonText" type="text" maxlength="24" placeholder="游戏娱乐" required>
+            </label>
+            <label>
+              <span>按钮链接</span>
+              <input id="topRightButtonUrl" name="topRightButtonUrl" type="url" placeholder="https://h5.cggames.top/#/Main/home" required>
+            </label>
+          </section>
 
-        <label>
-          <span>游戏娱乐链接</span>
-          <input id="gameUrl" name="gameUrl" type="url" placeholder="https://h5.cggames.top/#/Main/home" required>
-        </label>
+          <section class="field-group" aria-labelledby="middleLeftButtonTitle">
+            <h2 id="middleLeftButtonTitle">中间按钮左</h2>
+            <label>
+              <span>按钮文字</span>
+              <input id="middleLeftButtonText" name="middleLeftButtonText" type="text" maxlength="24" placeholder="EG/CG币出售" required>
+            </label>
+            <label>
+              <span>按钮链接</span>
+              <input id="middleLeftButtonUrl" name="middleLeftButtonUrl" type="url" placeholder="https://www.paopaomiyu.xyz/" required>
+            </label>
+          </section>
+
+          <section class="field-group" aria-labelledby="middleRightButtonTitle">
+            <h2 id="middleRightButtonTitle">中间按钮右</h2>
+            <label>
+              <span>按钮文字</span>
+              <input id="middleRightButtonText" name="middleRightButtonText" type="text" maxlength="24" placeholder="账户报白" required>
+            </label>
+            <label>
+              <span>按钮链接</span>
+              <input id="middleRightButtonUrl" name="middleRightButtonUrl" type="url" placeholder="https://www.paopaomiyu.xyz/" required>
+            </label>
+          </section>
+        </div>
 
         <div class="actions">
           <button id="loadBtn" class="secondary-btn" type="button">读取当前配置</button>
@@ -90,6 +125,6 @@
     </section>
   </main>
 
-  <script src="/assets/admin.js?v=20260701-2" defer></script>
+  <script src="/assets/admin.js?v=20260701-3" defer></script>
 </body>
 </html>

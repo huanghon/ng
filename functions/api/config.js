@@ -8,6 +8,14 @@ const DEFAULT_CONFIG = {
   contactUrl: "https://www.paopaomiyu.xyz/",
   downloadUrl: "https://www.paopaomiyu.xyz/",
   gameUrl: "https://h5.cggames.top/#/Main/home",
+  topLeftButtonText: "泡泡下载",
+  topLeftButtonUrl: "https://www.paopaomiyu.xyz/",
+  topRightButtonText: "游戏娱乐",
+  topRightButtonUrl: "https://h5.cggames.top/#/Main/home",
+  middleLeftButtonText: "EG/CG币出售",
+  middleLeftButtonUrl: "https://www.paopaomiyu.xyz/",
+  middleRightButtonText: "账户报白",
+  middleRightButtonUrl: "https://www.paopaomiyu.xyz/",
   siteTitle: "南宫承兑",
   logoUrl: "/images/logo.jpeg"
 };
@@ -161,11 +169,24 @@ async function verifyAdminPassword(env, password) {
 }
 
 function sanitizeConfig(config) {
+  const customerServiceId = normalizeText(config?.customerServiceId, DEFAULT_CONFIG.customerServiceId, 64);
+  const contactUrl = normalizePublicUrl(config?.contactUrl, DEFAULT_CONFIG.contactUrl, ["http:", "https:", "wangwang:"]);
+  const downloadUrl = normalizePublicUrl(config?.downloadUrl, DEFAULT_CONFIG.downloadUrl);
+  const gameUrl = normalizePublicUrl(config?.gameUrl, DEFAULT_CONFIG.gameUrl);
+
   return {
-    customerServiceId: normalizeText(config?.customerServiceId, DEFAULT_CONFIG.customerServiceId, 64),
-    contactUrl: normalizePublicUrl(config?.contactUrl, DEFAULT_CONFIG.contactUrl, ["http:", "https:", "wangwang:"]),
-    downloadUrl: normalizePublicUrl(config?.downloadUrl, DEFAULT_CONFIG.downloadUrl),
-    gameUrl: normalizePublicUrl(config?.gameUrl, DEFAULT_CONFIG.gameUrl),
+    customerServiceId,
+    contactUrl,
+    downloadUrl,
+    gameUrl,
+    topLeftButtonText: normalizeText(config?.topLeftButtonText, DEFAULT_CONFIG.topLeftButtonText, 24),
+    topLeftButtonUrl: normalizePublicUrl(config?.topLeftButtonUrl ?? config?.downloadUrl, downloadUrl),
+    topRightButtonText: normalizeText(config?.topRightButtonText, DEFAULT_CONFIG.topRightButtonText, 24),
+    topRightButtonUrl: normalizePublicUrl(config?.topRightButtonUrl ?? config?.gameUrl, gameUrl),
+    middleLeftButtonText: normalizeText(config?.middleLeftButtonText, DEFAULT_CONFIG.middleLeftButtonText, 24),
+    middleLeftButtonUrl: normalizePublicUrl(config?.middleLeftButtonUrl ?? config?.contactUrl, contactUrl, ["http:", "https:", "wangwang:"]),
+    middleRightButtonText: normalizeText(config?.middleRightButtonText, DEFAULT_CONFIG.middleRightButtonText, 24),
+    middleRightButtonUrl: normalizePublicUrl(config?.middleRightButtonUrl ?? config?.contactUrl, contactUrl, ["http:", "https:", "wangwang:"]),
     siteTitle: normalizeText(config?.siteTitle, DEFAULT_CONFIG.siteTitle, 40),
     logoUrl: normalizeLogoUrl(config?.logoUrl, DEFAULT_CONFIG.logoUrl)
   };
@@ -174,11 +195,26 @@ function sanitizeConfig(config) {
 function validateAdminConfig(config, currentConfig) {
   const errors = [];
   const customerServiceId = normalizeRequiredAdminText(config?.customerServiceId, "客服 ID", 64);
-  const contactUrl = normalizeRequiredAdminUrl(config?.contactUrl, "联系客服跳转链接", ["http:", "https:", "wangwang:"]);
-  const downloadUrl = normalizeRequiredAdminUrl(config?.downloadUrl, "泡泡下载链接");
-  const gameUrl = normalizeRequiredAdminUrl(config?.gameUrl, "游戏娱乐链接");
+  const topLeftButtonText = normalizeRequiredAdminText(config?.topLeftButtonText, "右上角按钮左文字", 24);
+  const topLeftButtonUrl = normalizeRequiredAdminUrl(config?.topLeftButtonUrl, "右上角按钮左链接");
+  const topRightButtonText = normalizeRequiredAdminText(config?.topRightButtonText, "右上角按钮右文字", 24);
+  const topRightButtonUrl = normalizeRequiredAdminUrl(config?.topRightButtonUrl, "右上角按钮右链接");
+  const middleLeftButtonText = normalizeRequiredAdminText(config?.middleLeftButtonText, "中间按钮左文字", 24);
+  const middleLeftButtonUrl = normalizeRequiredAdminUrl(config?.middleLeftButtonUrl, "中间按钮左链接", ["http:", "https:", "wangwang:"]);
+  const middleRightButtonText = normalizeRequiredAdminText(config?.middleRightButtonText, "中间按钮右文字", 24);
+  const middleRightButtonUrl = normalizeRequiredAdminUrl(config?.middleRightButtonUrl, "中间按钮右链接", ["http:", "https:", "wangwang:"]);
 
-  for (const item of [customerServiceId, contactUrl, downloadUrl, gameUrl]) {
+  for (const item of [
+    customerServiceId,
+    topLeftButtonText,
+    topLeftButtonUrl,
+    topRightButtonText,
+    topRightButtonUrl,
+    middleLeftButtonText,
+    middleLeftButtonUrl,
+    middleRightButtonText,
+    middleRightButtonUrl
+  ]) {
     if (item.error) {
       errors.push(item.error);
     }
@@ -192,9 +228,17 @@ function validateAdminConfig(config, currentConfig) {
     config: {
       ...currentConfig,
       customerServiceId: customerServiceId.value,
-      contactUrl: contactUrl.value,
-      downloadUrl: downloadUrl.value,
-      gameUrl: gameUrl.value
+      contactUrl: middleLeftButtonUrl.value,
+      downloadUrl: topLeftButtonUrl.value,
+      gameUrl: topRightButtonUrl.value,
+      topLeftButtonText: topLeftButtonText.value,
+      topLeftButtonUrl: topLeftButtonUrl.value,
+      topRightButtonText: topRightButtonText.value,
+      topRightButtonUrl: topRightButtonUrl.value,
+      middleLeftButtonText: middleLeftButtonText.value,
+      middleLeftButtonUrl: middleLeftButtonUrl.value,
+      middleRightButtonText: middleRightButtonText.value,
+      middleRightButtonUrl: middleRightButtonUrl.value
     }
   };
 }

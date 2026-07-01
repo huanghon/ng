@@ -15,9 +15,14 @@
   const fields = {
     loginPassword: document.getElementById("loginPassword"),
     customerServiceId: document.getElementById("customerServiceId"),
-    contactUrl: document.getElementById("contactUrl"),
-    downloadUrl: document.getElementById("downloadUrl"),
-    gameUrl: document.getElementById("gameUrl"),
+    topLeftButtonText: document.getElementById("topLeftButtonText"),
+    topLeftButtonUrl: document.getElementById("topLeftButtonUrl"),
+    topRightButtonText: document.getElementById("topRightButtonText"),
+    topRightButtonUrl: document.getElementById("topRightButtonUrl"),
+    middleLeftButtonText: document.getElementById("middleLeftButtonText"),
+    middleLeftButtonUrl: document.getElementById("middleLeftButtonUrl"),
+    middleRightButtonText: document.getElementById("middleRightButtonText"),
+    middleRightButtonUrl: document.getElementById("middleRightButtonUrl"),
     newAdminPassword: document.getElementById("newAdminPassword"),
     confirmAdminPassword: document.getElementById("confirmAdminPassword")
   };
@@ -31,17 +36,27 @@
 
   function fillForm(config) {
     fields.customerServiceId.value = config.customerServiceId || "";
-    fields.contactUrl.value = config.contactUrl || "";
-    fields.downloadUrl.value = config.downloadUrl || "";
-    fields.gameUrl.value = config.gameUrl || "";
+    fields.topLeftButtonText.value = config.topLeftButtonText || "泡泡下载";
+    fields.topLeftButtonUrl.value = config.topLeftButtonUrl || config.downloadUrl || "";
+    fields.topRightButtonText.value = config.topRightButtonText || "游戏娱乐";
+    fields.topRightButtonUrl.value = config.topRightButtonUrl || config.gameUrl || "";
+    fields.middleLeftButtonText.value = config.middleLeftButtonText || "EG/CG币出售";
+    fields.middleLeftButtonUrl.value = config.middleLeftButtonUrl || config.contactUrl || "";
+    fields.middleRightButtonText.value = config.middleRightButtonText || "账户报白";
+    fields.middleRightButtonUrl.value = config.middleRightButtonUrl || config.contactUrl || "";
   }
 
   function getConfigFromForm() {
     return {
       customerServiceId: fields.customerServiceId.value.trim(),
-      contactUrl: fields.contactUrl.value.trim(),
-      downloadUrl: fields.downloadUrl.value.trim(),
-      gameUrl: fields.gameUrl.value.trim()
+      topLeftButtonText: fields.topLeftButtonText.value.trim(),
+      topLeftButtonUrl: fields.topLeftButtonUrl.value.trim(),
+      topRightButtonText: fields.topRightButtonText.value.trim(),
+      topRightButtonUrl: fields.topRightButtonUrl.value.trim(),
+      middleLeftButtonText: fields.middleLeftButtonText.value.trim(),
+      middleLeftButtonUrl: fields.middleLeftButtonUrl.value.trim(),
+      middleRightButtonText: fields.middleRightButtonText.value.trim(),
+      middleRightButtonUrl: fields.middleRightButtonUrl.value.trim()
     };
   }
 
@@ -152,7 +167,7 @@
       }
 
       fillForm(result.config);
-      setStatus(statusMessage, `保存成功，游戏娱乐链接已更新为：${result.config.gameUrl}`, "success");
+      setStatus(statusMessage, "保存成功，首页 4 个按钮已同步更新。", "success");
     } catch (error) {
       console.error(error);
       setStatus(statusMessage, error.message || "保存失败，请稍后重试。", "error");
